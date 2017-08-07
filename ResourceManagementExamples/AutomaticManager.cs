@@ -12,7 +12,7 @@ namespace ResourceManagementExamples
     {
         private readonly IResource resource;
 
-        private readonly TimeSpan maxiumumIdleTimeBeforeClosing;
+        private readonly TimeSpan maximumIdleTimeBeforeClosing;
 
         private readonly object lockObject = new object();
 
@@ -24,10 +24,10 @@ namespace ResourceManagementExamples
 
         public AutomaticManager(
             IResource resource,
-            TimeSpan maxiumumIdleTimeBeforeClosing)
+            TimeSpan maximumIdleTimeBeforeClosing)
         {
             this.resource = resource;
-            this.maxiumumIdleTimeBeforeClosing = maxiumumIdleTimeBeforeClosing;
+            this.maximumIdleTimeBeforeClosing = maximumIdleTimeBeforeClosing;
         }
 
         public string QuerySomeData()
@@ -61,7 +61,7 @@ namespace ResourceManagementExamples
 
         private async void ScheduleResourceClosing()
         {
-            var delay = maxiumumIdleTimeBeforeClosing;
+            var delay = maximumIdleTimeBeforeClosing;
 
             while (true)
             {
@@ -69,7 +69,7 @@ namespace ResourceManagementExamples
 
                 lock (lockObject)
                 {
-                    delay = maxiumumIdleTimeBeforeClosing - lastRequestStopwatch.Elapsed;
+                    delay = maximumIdleTimeBeforeClosing - lastRequestStopwatch.Elapsed;
 
                     if (requestNumber == 1 || delay <= TimeSpan.Zero)
                     {

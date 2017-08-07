@@ -10,7 +10,7 @@ namespace ResourceManagementExamples
     {
         private readonly IOpenClosable openClosable;
 
-        private readonly TimeSpan maxiumumIdleTimeBeforeClosing;
+        private readonly TimeSpan maximumIdleTimeBeforeClosing;
 
         private readonly object lockObject = new object();
 
@@ -20,10 +20,10 @@ namespace ResourceManagementExamples
 
         private long requestNumber;
 
-        public AutomaticManagerAspect(IOpenClosable openClosable, TimeSpan maxiumumIdleTimeBeforeClosing)
+        public AutomaticManagerAspect(IOpenClosable openClosable, TimeSpan maximumIdleTimeBeforeClosing)
         {
             this.openClosable = openClosable;
-            this.maxiumumIdleTimeBeforeClosing = maxiumumIdleTimeBeforeClosing;
+            this.maximumIdleTimeBeforeClosing = maximumIdleTimeBeforeClosing;
         }
 
         public void Intercept(IInvocation invocation)
@@ -57,7 +57,7 @@ namespace ResourceManagementExamples
 
         private async void ScheduleResourceClosing()
         {
-            var delay = maxiumumIdleTimeBeforeClosing;
+            var delay = maximumIdleTimeBeforeClosing;
 
             while (true)
             {
@@ -65,7 +65,7 @@ namespace ResourceManagementExamples
 
                 lock (lockObject)
                 {
-                    delay = maxiumumIdleTimeBeforeClosing - lastRequestStopwatch.Elapsed;
+                    delay = maximumIdleTimeBeforeClosing - lastRequestStopwatch.Elapsed;
 
                     if (requestNumber == 1 || delay <= TimeSpan.Zero)
                     {
